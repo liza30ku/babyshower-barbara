@@ -5,7 +5,7 @@ export async function getGifts() {
   return res.json();
 }
 
-export async function submitRSVP(data) {
+export async function submitRSVP(data: any) {
   const res = await fetch(`${GOOGLE_APPS_SCRIPT_URL}?action=submitRSVP`, {
     method: 'POST',
     body: JSON.stringify(data),
@@ -14,7 +14,7 @@ export async function submitRSVP(data) {
   return res.json();
 }
 
-export async function reserveGift(giftId, guestName) {
+export async function reserveGift(giftId: string, guestName: string) {
   const res = await fetch(`${GOOGLE_APPS_SCRIPT_URL}?action=reserveGift`, {
     method: 'POST',
     body: JSON.stringify({ giftId, guestName }),

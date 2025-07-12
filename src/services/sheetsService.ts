@@ -5,7 +5,7 @@ export async function getGifts() {
   return res.json();
 }
 
-export async function submitRSVP(data: any) {
+export async function submitRSVP(data: Record<string, any>) {
   const res = await fetch(`${GOOGLE_APPS_SCRIPT_URL}?action=submitRSVP`, {
     method: 'POST',
     body: JSON.stringify(data),

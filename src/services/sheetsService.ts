@@ -1,4 +1,4 @@
-const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyJNND9LN685pdrG5DnLJWDAqpNy51boJipw9xkxg-M5rgSNGpmbCajTyQhYaX1rT6Vwg/exec';
+const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzwHDq8pHtPyjjCUkYoQsJ3M9NZRKGOk4IXwaALnIfMLLrluPvzx1w40LjmNp6QNTzGDg/exec';
 
 export async function getGifts() {
   const res = await fetch(`${GOOGLE_APPS_SCRIPT_URL}?action=getGifts`);

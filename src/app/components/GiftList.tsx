@@ -2,8 +2,13 @@ import { useEffect, useState } from "react";
 import { getGifts } from "../../services/sheetsService";
 import './globals.css'
 
+interface Gift {
+  name: string;
+  [key: string]: unknown;
+}
+
 export default function GiftList() {
-  const [gifts, setGifts] = useState<any[]>([]);
+  const [gifts, setGifts] = useState<Gift[]>([]);
 
   useEffect(() => {
     async function fetchGifts() {

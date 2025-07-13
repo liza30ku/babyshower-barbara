@@ -1,7 +1,7 @@
 'use client';
-import React, { useState } from "react";
-import { submitRSVP } from '../services/sheetsService';
 import styles from "./page.module.css"; // Usa tus estilos existentes
+import { submitRSVP } from '../services/sheetsService';
+import { useState } from "react";
 
 export default function ConfirmarAsistenciaForm({ onClose }: { onClose: () => void }) {
   const [nombre, setNombre] = useState("");

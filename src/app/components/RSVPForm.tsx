@@ -1,6 +1,15 @@
 import React, { useState } from 'react';
-import { RSVPFormData, SheetsService, shareToSocialMedia } from '../services/sheetsService';
-import { Calendar, MapPin, Users, MessageCircle, Share2 } from 'lucide-react';
+import { submitRSVP } from '../../services/sheetsService';
+
+
+interface RSVPFormData extends Record<string, unknown> {
+  name: string;
+  email: string;
+  phone: string;
+  attending: boolean;
+  guests: number;
+  message: string;
+}
 
 interface RSVPFormProps {
   onRSVPSubmitted?: (data: RSVPFormData) => void;
@@ -39,15 +48,13 @@ export const RSVPForm: React.FC<RSVPFormProps> = ({ onRSVPSubmitted }) => {
 
     try {
       setSubmitting(true);
-      const success = await SheetsService.submitRSVP(formData);
+      const success = await submitRSVP(formData);
       
       if (success) {
         setSubmitted(true);
         onRSVPSubmitted?.(formData);
         
         // Mostrar opciones para compartir
-        const shareMessage = `¡Confirmé mi asistencia al baby shower! 🎉👶`;
-        showShareOptions(shareMessage);
       } else {
         alert('Error al enviar el RSVP. Inténtalo de nuevo.');
       }
@@ -56,27 +63,6 @@ export const RSVPForm: React.FC<RSVPFormProps> = ({ onRSVPSubmitted }) => {
       console.error(error);
     } finally {
       setSubmitting(false);
-    }
-  };
-
-  const showShareOptions = (message: string) => {
-    const shareOptions = [
-      { name: 'WhatsApp', platform: 'whatsapp' as const, icon: '💬' },
-      { name: 'Facebook', platform: 'facebook' as const, icon: '📘' },
-      { name: 'Twitter', platform: 'twitter' as const, icon: '🐦' }
-    ];
-
-    const shareText = `¿Te gustaría compartir que asistirás al baby shower?\n\n${message}`;
-    
-    if (confirm(shareText)) {
-      const platform = prompt(
-        'Elige una plataforma:\n1. WhatsApp\n2. Facebook\n3. Twitter\n\nEscribe el número:'
-      );
-      
-      const option = shareOptions[parseInt(platform || '1') - 1];
-      if (option) {
-        shareToSocialMedia(option.platform, message);
-      }
     }
   };
 
@@ -104,10 +90,11 @@ export const RSVPForm: React.FC<RSVPFormProps> = ({ onRSVPSubmitted }) => {
         </p>
         <div className="space-y-3">
           <button
-            onClick={() => shareToSocialMedia('whatsapp', '¡Confirmé mi asistencia al baby shower! 🎉👶')}
+            onClick={() => {
+              // Elimino la función showShareOptions y todas las llamadas a shareToSocialMedia
+            }}
             className="btn-primary w-full"
           >
-            <Share2 className="h-4 w-4 inline mr-2" />
             Compartir en WhatsApp
           </button>
           <button
@@ -198,7 +185,6 @@ export const RSVPForm: React.FC<RSVPFormProps> = ({ onRSVPSubmitted }) => {
         {formData.attending && (
           <div>
             <label htmlFor="guests" className="block text-sm font-medium text-gray-700 mb-2">
-              <Users className="h-4 w-4 inline mr-2" />
               Número de personas
             </label>
             <select
@@ -220,7 +206,6 @@ export const RSVPForm: React.FC<RSVPFormProps> = ({ onRSVPSubmitted }) => {
         {/* Mensaje */}
         <div>
           <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
-            <MessageCircle className="h-4 w-4 inline mr-2" />
             Mensaje para los futuros papás (opcional)
           </label>
           <textarea
